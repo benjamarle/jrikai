@@ -1,6 +1,7 @@
 package org.rikai.dictionary.edict;
 
 import org.rikai.dictionary.Entries;
+import org.rikai.dictionary.db.SqliteDatabase;
 
 public class NamesDictionary extends EdictDictionary {
 
@@ -8,6 +9,10 @@ public class NamesDictionary extends EdictDictionary {
 
 	public NamesDictionary(String path) {
 		super(path);
+	}
+
+	public NamesDictionary(String path, SqliteDatabase sqliteDatabaseImpl) {
+		super(path, sqliteDatabaseImpl);
 	}
 
 	/**

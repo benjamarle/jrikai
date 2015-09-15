@@ -65,6 +65,9 @@ public class EdictEntry extends AbstractEntry {
 	 *            how the original inflected word transformed to the given word
 	 */
 	public EdictEntry(String word, String reading, String gloss, String reason) {
+		if (word == null) {
+			word = reading;
+		}
 		this.word = word;
 		this.reading = reading;
 		this.gloss = gloss;
