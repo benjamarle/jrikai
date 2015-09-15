@@ -24,6 +24,8 @@ If you are interested in the FireFox plugin, please visit www.polarcloud.com/rik
 */
 package org.rikai.dictionary.edict;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
