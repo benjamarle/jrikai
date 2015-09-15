@@ -23,11 +23,11 @@ package org.rikai.deinflector;
 public class DeinflectedWord {
 
 	private String originalWord;
-	
+
 	private String word;
-	
+
 	private int type = 0xFF;
-	
+
 	private String reason = "";
 
 	public DeinflectedWord() {
@@ -45,24 +45,24 @@ public class DeinflectedWord {
 		this.type = type;
 		this.reason = reason;
 	}
-	
 
 	/**
 	 * @return the originalWord
 	 */
 	public String getOriginalWord() {
-		return originalWord;
+		return this.originalWord;
 	}
 
 	/**
-	 * @param originalWord the originalWord to set
+	 * @param originalWord
+	 *            the originalWord to set
 	 */
 	public void setOriginalWord(String originalWord) {
 		this.originalWord = originalWord;
 	}
 
 	public String getWord() {
-		return word;
+		return this.word;
 	}
 
 	public void setWord(String word) {
@@ -70,7 +70,7 @@ public class DeinflectedWord {
 	}
 
 	public int getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(int type) {
@@ -78,7 +78,7 @@ public class DeinflectedWord {
 	}
 
 	public String getReason() {
-		return reason;
+		return this.reason;
 	}
 
 	public void setReason(String reason) {

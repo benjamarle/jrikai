@@ -23,22 +23,26 @@ package org.rikai.deinflector;
 import java.util.ArrayList;
 
 public class RuleGroup extends ArrayList<Rule> {
-	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1112514782317803681L;
 	private int fromLength;
 
 	public RuleGroup(int fromLength) {
 		super();
 		this.fromLength = fromLength;
 	}
-	
+
 	@Override
 	public boolean add(Rule e) {
-		assert e.getFromLength() == fromLength;
+		assert e.getFromLength() == this.fromLength;
 		return super.add(e);
 	}
 
 	public int getFromLength() {
-		return fromLength;
+		return this.fromLength;
 	}
-	
+
 }

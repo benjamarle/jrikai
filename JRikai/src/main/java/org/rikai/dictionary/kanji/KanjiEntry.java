@@ -1,24 +1,36 @@
 package org.rikai.dictionary.kanji;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.rikai.dictionary.AbstractEntry;
 
 public class KanjiEntry extends AbstractEntry {
-	
+	private static Pattern miscPattern = Pattern.compile("^([A-Z]+)(.*)");
+	public static boolean lazyLoad = false;
+
 	private Character kanji;
-	
+
 	private String definition;
-	
+
+	private String miscString = "";
+
 	private Map<KanjiTag, String> misc = new Hashtable<KanjiTag, String>();
-	
+
+	private boolean loaded;
+
+	private Set<String> unidentifiedTags = new HashSet<String>();
+
 	private String yomi;
-	
+
 	private String nanori;
-	
+
 	private String bushmei;
-	
+
 	public KanjiEntry(Character kanji) {
 		super();
 		this.kanji = kanji;
@@ -28,11 +40,12 @@ public class KanjiEntry extends AbstractEntry {
 	 * @return the kanji
 	 */
 	public Character getKanji() {
-		return kanji;
+		return this.kanji;
 	}
 
 	/**
-	 * @param kanji the kanji to set
+	 * @param kanji
+	 *            the kanji to set
 	 */
 	public void setKanji(Character kanji) {
 		this.kanji = kanji;
@@ -42,11 +55,12 @@ public class KanjiEntry extends AbstractEntry {
 	 * @return the definition
 	 */
 	public String getDefinition() {
-		return definition;
+		return this.definition;
 	}
 
 	/**
-	 * @param definition the definition to set
+	 * @param definition
+	 *            the definition to set
 	 */
 	public void setDefinition(String definition) {
 		this.definition = definition;
@@ -56,11 +70,15 @@ public class KanjiEntry extends AbstractEntry {
 	 * @return the misc
 	 */
 	public Map<KanjiTag, String> getMisc() {
-		return misc;
+		if (!this.loaded) {
+			this.load();
+		}
+		return this.misc;
 	}
 
 	/**
-	 * @param misc the misc to set
+	 * @param misc
+	 *            the misc to set
 	 */
 	public void setMisc(Map<KanjiTag, String> misc) {
 		this.misc = misc;
@@ -70,11 +88,12 @@ public class KanjiEntry extends AbstractEntry {
 	 * @return the yomi
 	 */
 	public String getYomi() {
-		return yomi;
+		return this.yomi;
 	}
 
 	/**
-	 * @param yomi the yomi to set
+	 * @param yomi
+	 *            the yomi to set
 	 */
 	public void setYomi(String yomi) {
 		this.yomi = yomi;
@@ -84,76 +103,87 @@ public class KanjiEntry extends AbstractEntry {
 	 * @return the nanori
 	 */
 	public String getNanori() {
-		return nanori;
+		return this.nanori;
 	}
 
 	/**
-	 * @param nanori the nanori to set
+	 * @param nanori
+	 *            the nanori to set
 	 */
 	public void setNanori(String nanori) {
 		this.nanori = nanori;
 	}
-	
+
 	/**
 	 * @return the bushmei
 	 */
 	public String getBushmei() {
-		return bushmei;
+		return this.bushmei;
 	}
 
 	/**
-	 * @param bushmei the bushmei to set
+	 * @param bushmei
+	 *            the bushmei to set
 	 */
 	public void setBushmei(String bushmei) {
 		this.bushmei = bushmei;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((kanji == null) ? 0 : kanji.hashCode());
+		result = prime * result + ((this.kanji == null) ? 0 : this.kanji.hashCode());
 		return result;
 	}
-	
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		KanjiEntry other = (KanjiEntry) obj;
-		if (kanji == null) {
-			if (other.kanji != null)
+		if (this.kanji == null) {
+			if (other.kanji != null) {
 				return false;
-		} else if (!kanji.equals(other.kanji))
+			}
+		} else if (!this.kanji.equals(other.kanji)) {
 			return false;
+		}
 		return true;
 	}
-	
-	public String toString(){
+
+	@Override
+	public String toString() {
 		StringBuilder result = new StringBuilder();
 		result.append(this.kanji).append('\n');
 		result.append(this.definition).append('\n');
 		result.append(this.yomi).append('\n');
 		result.append("------------Misc-------------").append("\n");
 		for (KanjiTag tag : KanjiTag.values()) {
-			String value = this.misc.get(tag);
-			result.append(tag.getDescription()+" : "+value).append("\n");
+			String value = this.getMisc().get(tag);
+			result.append(tag.getDescription() + " : " + value).append("\n");
 		}
 		result.append("------------Misc-------------").append("\n");
 		return result.toString();
 	}
-	
+
 	@Override
 	public String toStringCompact() {
 		StringBuilder result = new StringBuilder();
@@ -161,5 +191,55 @@ public class KanjiEntry extends AbstractEntry {
 		result.append(this.definition).append(" [").append(this.yomi).append("]\n");
 		return result.toString();
 	}
-	
+
+	/**
+	 * @return the miscString
+	 */
+	public String getMiscString() {
+		return this.miscString;
+	}
+
+	/**
+	 * @param miscString
+	 *            the miscString to set
+	 */
+	public void setMiscString(String miscString) {
+		this.miscString = miscString;
+		if (!lazyLoad) {
+			load();
+		}
+	}
+
+	private void load() {
+		if (this.loaded) {
+			return;
+		}
+		String[] miscProperties = this.miscString.split(" ");
+		Map<KanjiTag, String> miscMap = this.misc;
+		for (String misc : miscProperties) {
+			Matcher matcher = miscPattern.matcher(misc);
+			if (!matcher.matches()) {
+				continue;
+			}
+			String tagStr = matcher.group(1);
+			KanjiTag tag = null;
+			try {
+				tag = KanjiTag.valueOf(tagStr);
+			} catch (IllegalArgumentException e) {
+				if (this.unidentifiedTags.add(tagStr)) {
+					System.err.println("Unidentified kanji tag: [" + tagStr + "]");
+				}
+				continue;
+			}
+			String value = matcher.group(2);
+			String miscMapValue = miscMap.get(tag);
+			if (miscMapValue == null) {
+				miscMapValue = value;
+			} else {
+				miscMapValue += " " + value;
+			}
+			miscMap.put(tag, miscMapValue);
+		}
+		this.loaded = true;
+	}
 }

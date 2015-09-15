@@ -3,14 +3,11 @@
  */
 package org.rikai;
 
-import static org.junit.Assert.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.deinflector.Deinflector;

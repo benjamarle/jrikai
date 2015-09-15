@@ -1,7 +1,4 @@
-package org.rikai.dictionary;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package org.rikai.dictionary.db;
 
 public interface SqliteDatabase {
 
@@ -13,7 +10,8 @@ public interface SqliteDatabase {
 	String getSearchQuery();
 
 	/**
-	 * @param searchQuery the searchQuery to set
+	 * @param searchQuery
+	 *            the searchQuery to set
 	 */
 	void setSearchQuery(String searchQuery);
 
@@ -21,9 +19,9 @@ public interface SqliteDatabase {
 	 * close the database connection to the dictionary. this should be called if loadData() is called
 	 */
 	void close();
-	
+
 	boolean isLoaded();
-	
-	ResultSet findWord(String word) throws SQLException;
+
+	ResultCursor findWord(String word);
 
 }

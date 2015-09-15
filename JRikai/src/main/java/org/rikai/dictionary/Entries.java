@@ -30,6 +30,11 @@ import java.util.List;
  */
 public class Entries extends ArrayList<AbstractEntry> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8677504304916843981L;
+
 	/** the length of the longest word in the entries */
 	private int maxLen = 0;
 
@@ -47,18 +52,18 @@ public class Entries extends ArrayList<AbstractEntry> {
 	 * @param complete
 	 * @param maxLen
 	 */
-	private Entries(ArrayList<AbstractEntry> entries, boolean complete, int maxLen) {
+	protected Entries(ArrayList<AbstractEntry> entries, boolean complete, int maxLen) {
 		this.addAll(entries);
 		this.complete = complete;
 		this.maxLen = maxLen;
 	}
 
 	public void setMaxLen(int len) {
-		maxLen = len;
+		this.maxLen = len;
 	}
 
 	public int getMaxLen() {
-		return maxLen;
+		return this.maxLen;
 	}
 
 	/**
@@ -95,11 +100,11 @@ public class Entries extends ArrayList<AbstractEntry> {
 	 * @return true if This has all possible word, false otherwise.
 	 */
 	public boolean isComplete() {
-		return complete;
+		return this.complete;
 	}
 
 	public void setComplete(boolean b) {
-		complete = b;
+		this.complete = b;
 	}
 
 }

@@ -20,14 +20,14 @@ Date: 2013 04 26
 */
 package org.rikai.deinflector;
 
-public class Rule { 
-	
+public class Rule {
+
 	private String from;
-	
+
 	private String to;
-	
+
 	private int type;
-	
+
 	private int reasonIndex;
 
 	public Rule() {
@@ -36,10 +36,10 @@ public class Rule {
 
 	public Rule(String[] rule) {
 		// no error checking
-		from = rule[0];
-		to = rule[1];
-		type = Integer.parseInt(rule[2]);
-		reasonIndex = Integer.parseInt(rule[3]);
+		this.from = rule[0];
+		this.to = rule[1];
+		this.type = Integer.parseInt(rule[2]);
+		this.reasonIndex = Integer.parseInt(rule[3]);
 	}
 
 	public Rule(String from, String to, int type, int reasonIndex) {
@@ -50,11 +50,11 @@ public class Rule {
 	}
 
 	public int getFromLength() {
-		return from.length();
+		return this.from.length();
 	}
 
 	public String getFrom() {
-		return from;
+		return this.from;
 	}
 
 	public void setFrom(String from) {
@@ -62,7 +62,7 @@ public class Rule {
 	}
 
 	public String getTo() {
-		return to;
+		return this.to;
 	}
 
 	public void setTo(String to) {
@@ -70,7 +70,7 @@ public class Rule {
 	}
 
 	public int getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(int type) {
@@ -78,7 +78,7 @@ public class Rule {
 	}
 
 	public int getReasonIndex() {
-		return reasonIndex;
+		return this.reasonIndex;
 	}
 
 	public void setReasonIndex(int reasonIndex) {

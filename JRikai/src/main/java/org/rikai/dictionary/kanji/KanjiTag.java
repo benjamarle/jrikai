@@ -39,6 +39,7 @@ public enum KanjiTag {
 		return description;
 	}
 	
+	@Override
 	public String toString(){
 		return getDescription();
 	}

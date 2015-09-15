@@ -11,17 +11,16 @@ import java.util.TreeMap;
 import org.apache.commons.io.IOUtils;
 
 public class Deinflector {
-	
 
 	private ArrayList<String> reasons = new ArrayList<String>();
 	private ArrayList<RuleGroup> ruleGroups = new ArrayList<RuleGroup>();
-	
+
 	public Deinflector(String path) throws FileNotFoundException, IOException {
 		loadDeinflectionData(path);
 	}
 
 	private boolean loadDeinflectionData(String path) throws FileNotFoundException, IOException {
-		List<String> difData = IOUtils.readLines(new FileInputStream(path),  "UTF-8");
+		List<String> difData = IOUtils.readLines(new FileInputStream(path), "UTF-8");
 
 		if (difData.size() == 0) {
 			return false;
@@ -35,7 +34,7 @@ public class Deinflector {
 			String[] f = difData.get(i).split("\t");
 
 			if (f.length == 1) {
-				reasons.add(f[0]);
+				this.reasons.add(f[0]);
 			} else if (f.length == 4) {
 				Rule rule = new Rule(f);
 
@@ -43,7 +42,7 @@ public class Deinflector {
 				if (prevLen != fromLength) {
 					group = new RuleGroup(fromLength);
 					prevLen = fromLength;
-					ruleGroups.add(group);
+					this.ruleGroups.add(group);
 				}
 				group.add(rule);
 			}
@@ -51,7 +50,7 @@ public class Deinflector {
 
 		return true;
 	}
-	
+
 	/**
 	 * returns a list of deinflected word, including the original word
 	 *
@@ -77,21 +76,19 @@ public class Deinflector {
 			word = result.get(i).getWord();
 
 			// check the word against each Rule in each RuleGroup
-			for (int j = 0; j < ruleGroups.size(); j++) {
-				RuleGroup group = ruleGroups.get(j);
+			for (int j = 0; j < this.ruleGroups.size(); j++) {
+				RuleGroup group = this.ruleGroups.get(j);
 
 				if (group.getFromLength() > word.length()) {
 					/*
-					 * if the word length is shorter than the inflection
-					 * From-Length, no need to check this group, move to the
-					 * next group (with a small length)
+					 * if the word length is shorter than the inflection From-Length, no need to check this group, move to the next group (with a
+					 * small length)
 					 */
 					continue;
 				}
 
 				/*
-				 * get the last part of the word (precisely the last group.flen
-				 * characters of the word) and check if it's a valid inflection
+				 * get the last part of the word (precisely the last group.flen characters of the word) and check if it's a valid inflection
 				 */
 				String tail = word.substring(word.length() - group.getFromLength());
 
@@ -122,9 +119,9 @@ public class Deinflector {
 					dw.setOriginalWord(word);
 					dw.setType(rule.getType() >> 8);
 					if (result.get(i).getReason().length() > 0) {
-						dw.setReason(reasons.get(rule.getReasonIndex()) + " < " + result.get(i).getReason());
+						dw.setReason(this.reasons.get(rule.getReasonIndex()) + " < " + result.get(i).getReason());
 					} else {
-						dw.setReason(reasons.get(rule.getReasonIndex()));
+						dw.setReason(this.reasons.get(rule.getReasonIndex()));
 					}
 
 					result.add(dw);

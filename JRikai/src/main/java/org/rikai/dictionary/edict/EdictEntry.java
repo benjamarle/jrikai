@@ -81,7 +81,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @param reason
 	 * @param length
 	 */
-	private EdictEntry(String word, String reading, String gloss, String reason, int length) {
+	protected EdictEntry(String word, String reading, String gloss, String reason, int length) {
 		this.word = word;
 		this.reading = reading;
 		this.gloss = gloss;
@@ -94,20 +94,21 @@ public class EdictEntry extends AbstractEntry {
 	 * 
 	 * @return a string representation of this entry
 	 */
+	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder(length);
+		StringBuilder result = new StringBuilder(this.length);
 
-		result.append(word).append(' ');
+		result.append(this.word).append(' ');
 
-		if (reading.length() != 0) {
-			result.append(reading).append(' ');
+		if (this.reading.length() != 0) {
+			result.append(this.reading).append(' ');
 		}
 
 		// if (reason.length() != 0) {
 		// result.append("(").append(reason).append(") ");
 		// }
 
-		result.append(gloss);
+		result.append(this.gloss);
 
 		return result.toString();
 	}
@@ -118,7 +119,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the word of this entry
 	 */
 	public String getWord() {
-		return word;
+		return this.word;
 	}
 
 	/**
@@ -126,19 +127,20 @@ public class EdictEntry extends AbstractEntry {
 	 * 
 	 * @return a string representation of this entry in a compact form.
 	 */
+	@Override
 	public String toStringCompact() {
-		StringBuilder result = new StringBuilder(length);
+		StringBuilder result = new StringBuilder(this.length);
 
-		result.append(word).append(' ');
+		result.append(this.word).append(' ');
 
-		if (reading.length() != 0) {
-			result.append('[').append(reading).append("] ");
+		if (this.reading.length() != 0) {
+			result.append('[').append(this.reading).append("] ");
 		}
-		if (reason.length() != 0) {
-			result.append("(").append(reason).append(")");
+		if (this.reason.length() != 0) {
+			result.append("(").append(this.reason).append(")");
 		}
 
-		result.append('\n').append(gloss);
+		result.append('\n').append(this.gloss);
 
 		return result.toString();
 	}
@@ -147,7 +149,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the reading
 	 */
 	public String getReading() {
-		return reading;
+		return this.reading;
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the gloss
 	 */
 	public String getGloss() {
-		return gloss;
+		return this.gloss;
 	}
 
 	/**
@@ -177,7 +179,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the reason
 	 */
 	public String getReason() {
-		return reason;
+		return this.reason;
 	}
 
 	/**
@@ -192,7 +194,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the deinflected
 	 */
 	public String getDeinflected() {
-		return deinflected;
+		return this.deinflected;
 	}
 
 	/**
@@ -207,7 +209,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the length
 	 */
 	public int getLength() {
-		return length;
+		return this.length;
 	}
 
 	/**

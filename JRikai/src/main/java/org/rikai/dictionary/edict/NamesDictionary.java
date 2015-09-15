@@ -1,12 +1,9 @@
 package org.rikai.dictionary.edict;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.rikai.dictionary.Entries;
 
 public class NamesDictionary extends EdictDictionary {
-	
+
 	private static final int DEFAULT_MAX_COUNT = 10;
 
 	public NamesDictionary(String path) {
@@ -20,10 +17,9 @@ public class NamesDictionary extends EdictDictionary {
 	 *            the base word
 	 * @return all the variants of the specified word
 	 */
+	@Override
 	public Entries wordSearch(String word) {
 		return wordSearch(word, DEFAULT_MAX_COUNT);
 	}
-
-
 
 }

@@ -1,7 +1,6 @@
 package org.rikai.utils;
 
 public class JapaneseConverter {
-	
 
 	private final static char[] ch = new char[] { '\u3092', '\u3041', '\u3043', '\u3045', '\u3047', '\u3049', '\u3083',
 			'\u3085', '\u3087', '\u3063', '\u30FC', '\u3042', '\u3044', '\u3046', '\u3048', '\u304A', '\u304B',
@@ -14,7 +13,7 @@ public class JapaneseConverter {
 			'\u3069', '\uFF85', '\uFF86', '\uFF87', '\uFF88', '\uFF89', '\u3070', '\u3073', '\u3076', '\u3079',
 			'\u307C' };
 	private final static char[] cs = new char[] { '\u3071', '\u3074', '\u3077', '\u307A', '\u307D' };
-	
+
 	/**
 	 * converts all katakana and half-width kana to full-width hiragana
 	 *
@@ -32,8 +31,7 @@ public class JapaneseConverter {
 	 * @param word
 	 *            the word to convert
 	 * @param discard
-	 *            if true, conversion is stopped when a non-japanese char is
-	 *            encountered
+	 *            if true, conversion is stopped when a non-japanese char is encountered
 	 * @return the hiragana
 	 */
 	public static String toHiragana(String word, boolean discard, int[] trueLen) {

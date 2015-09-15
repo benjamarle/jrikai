@@ -15,16 +15,18 @@ public class WordEdictDictionary extends EdictDictionary {
 		super(path);
 		this.deinflector = deinflector;
 	}
-	
 
+	@Override
 	protected List<DeinflectedWord> deinflectWord(String word) {
-		return deinflector.deinflect(word);
+		return this.deinflector.deinflect(word);
 	}
 
+	@Override
 	protected boolean isValid(DeinflectedWord variant, String definition) {
-		if (variant.isOriginal())
+		if (variant.isOriginal()) {
 			return true;
-		String[] parts = pattern.split(definition);
+		}
+		String[] parts = this.pattern.split(definition);
 
 		for (String currentPart : parts) {
 
