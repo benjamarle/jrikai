@@ -20,6 +20,7 @@ Date: 2013 04 26
 */
 package org.rikai.dictionary.edict;
 
+import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.dictionary.AbstractEntry;
 
 /**
@@ -29,6 +30,9 @@ import org.rikai.dictionary.AbstractEntry;
  *
  */
 public class EdictEntry extends AbstractEntry {
+
+	/** variant */
+	private DeinflectedWord variant;
 
 	/** the word **/
 	private String word = "";
@@ -43,11 +47,6 @@ public class EdictEntry extends AbstractEntry {
 	private String reason = "";
 
 	private String deinflected = "";
-
-	/**
-	 * the length used internally for the stringbuilder when returning a string representation of this Entry, for efficiency
-	 */
-	private int length = 0;
 
 	public EdictEntry() {
 	}
@@ -64,32 +63,20 @@ public class EdictEntry extends AbstractEntry {
 	 * @param reason
 	 *            how the original inflected word transformed to the given word
 	 */
-	public EdictEntry(String word, String reading, String gloss, String reason) {
+	public EdictEntry(DeinflectedWord variant, String word, String reading, String gloss, String reason) {
 		if (word == null) {
 			word = reading;
 		}
+
+		this.variant = variant;
 		this.word = word;
 		this.reading = reading;
 		this.gloss = gloss;
 		this.reason = reason;
-		this.length = word.length() + gloss.length() + reading.length() + reason.length() + 20;
 	}
 
-	/**
-	 * use to create from parcel
-	 * 
-	 * @param word
-	 * @param reading
-	 * @param gloss
-	 * @param reason
-	 * @param length
-	 */
-	protected EdictEntry(String word, String reading, String gloss, String reason, int length) {
-		this.word = word;
-		this.reading = reading;
-		this.gloss = gloss;
-		this.reason = reason;
-		this.length = length;
+	private int getToStringMaxLength() {
+		return word.length() + gloss.length() + reading.length() + reason.length() + 20;
 	}
 
 	/**
@@ -99,7 +86,7 @@ public class EdictEntry extends AbstractEntry {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder(this.length);
+		StringBuilder result = new StringBuilder(getToStringMaxLength());
 
 		result.append(this.word).append(' ');
 
@@ -132,7 +119,7 @@ public class EdictEntry extends AbstractEntry {
 	 */
 	@Override
 	public String toStringCompact() {
-		StringBuilder result = new StringBuilder(this.length);
+		StringBuilder result = new StringBuilder(getToStringMaxLength());
 
 		result.append(this.word).append(' ');
 
@@ -212,15 +199,7 @@ public class EdictEntry extends AbstractEntry {
 	 * @return the length
 	 */
 	public int getLength() {
-		return this.length;
-	}
-
-	/**
-	 * @param length
-	 *            the length to set
-	 */
-	public void setLength(int length) {
-		this.length = length;
+		return variant.getOriginalWord().length();
 	}
 
 	/**

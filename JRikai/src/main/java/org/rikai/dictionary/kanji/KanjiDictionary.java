@@ -64,7 +64,7 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry>implements Di
 		}
 		String kanjiStr = split[0];
 		char kanjiChar = kanjiStr.charAt(0);
-		KanjiEntry kanjiEntry = new KanjiEntry(kanjiChar);
+		KanjiEntry kanjiEntry = makeEntry(kanjiChar);
 
 		String miscStr = split[1];
 		kanjiEntry.setMiscString(miscStr);
@@ -82,6 +82,10 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry>implements Di
 		kanjiEntry.setDefinition(definitionStr);
 
 		return kanjiEntry;
+	}
+
+	protected KanjiEntry makeEntry(char kanjiChar) {
+		return new KanjiEntry(kanjiChar);
 	}
 
 	public Entries query(String q) {

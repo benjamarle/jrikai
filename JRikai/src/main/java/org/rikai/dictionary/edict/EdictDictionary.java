@@ -160,7 +160,11 @@ public class EdictDictionary implements Dictionary {
 		// the Table value
 		// (1, 2, 3, 4, 5, 6, 7)
 		// (_id, word, wmark, kana, kmark, show, defn)
-		return new EdictEntry(cursor.getValue("kanji"), cursor.getValue("kana"), cursor.getValue("entry"), reason);
+		return makeEntry(variant, cursor.getValue("kanji"), cursor.getValue("kana"), cursor.getValue("entry"), reason);
+	}
+
+	protected EdictEntry makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason) {
+		return new EdictEntry(variant, kanji, kana, entry, reason);
 	}
 
 	public void close() {

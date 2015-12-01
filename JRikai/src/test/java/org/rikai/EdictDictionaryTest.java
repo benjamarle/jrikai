@@ -16,7 +16,8 @@ import org.rikai.dictionary.edict.EdictDictionary;
 public class EdictDictionaryTest {
 
 	private static final String NON_INFLECTED_VERB = "漬ける";
-	private static final String INFLECTED_VERB = "漬けた";
+	private static final String INFLECTED_VERB = "した";
+	private static final String KANJI_WORD = "下";
 	private static final String EDICT_PATH = "C:\\polaredict.sqlite";
 	private EdictDictionary edictDictionary;
 
@@ -44,7 +45,25 @@ public class EdictDictionaryTest {
 	@Test
 	public void testWordSearchInflected() {
 		Entries wordSearch = edictDictionary.wordSearch(INFLECTED_VERB);
-		assertEquals(wordSearch.size(), 1);
+		assertEquals(wordSearch.size(), 10);
+	}
+
+	/**
+	 * Test method for {@link org.rikai.dictionary.edict.EdictDictionary#wordSearch(java.lang.String)}.
+	 */
+	@Test
+	public void testWordSearchMaxLength() {
+		Entries wordSearch = edictDictionary.wordSearch(INFLECTED_VERB);
+		assertEquals(wordSearch.getMaxLen(), 2);
+	}
+
+	/**
+	 * Test method for {@link org.rikai.dictionary.edict.EdictDictionary#wordSearch(java.lang.String)}.
+	 */
+	@Test
+	public void testKanjiWordSearchMaxLength() {
+		Entries wordSearch = edictDictionary.wordSearch(KANJI_WORD);
+		assertEquals(wordSearch.getMaxLen(), 1);
 	}
 
 	/**

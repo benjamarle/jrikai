@@ -43,6 +43,11 @@ public class KanjiEntry extends AbstractEntry {
 		return this.kanji;
 	}
 
+	@Override
+	public int getLength() {
+		return 1;
+	}
+
 	/**
 	 * @param kanji
 	 *            the kanji to set
@@ -186,9 +191,15 @@ public class KanjiEntry extends AbstractEntry {
 
 	@Override
 	public String toStringCompact() {
+		Map<KanjiTag, String> prop = this.getMisc();
+		String heisigNumber = prop.get(KanjiTag.L);
 		StringBuilder result = new StringBuilder();
-		result.append(this.kanji).append('\n');
-		result.append(this.definition).append(" [").append(this.yomi).append("]\n");
+		result.append(this.kanji);
+		if (heisigNumber != null) {
+			result.append(" [" + heisigNumber + "]");
+		}
+		result.append('\n');
+		result.append(this.definition).append(" [").append(this.yomi).append("]");
 		return result.toString();
 	}
 

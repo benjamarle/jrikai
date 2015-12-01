@@ -5,11 +5,17 @@ import java.util.regex.Pattern;
 
 import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.deinflector.Deinflector;
+import org.rikai.dictionary.db.SqliteDatabase;
 
 public class WordEdictDictionary extends EdictDictionary {
 
 	private Pattern pattern = Pattern.compile("[,\\(\\)]");
 	private Deinflector deinflector;
+
+	public WordEdictDictionary(String path, Deinflector deinflector, SqliteDatabase sqliteDatabaseImpl) {
+		super(path, sqliteDatabaseImpl);
+		this.deinflector = deinflector;
+	}
 
 	public WordEdictDictionary(String path, Deinflector deinflector) {
 		super(path);

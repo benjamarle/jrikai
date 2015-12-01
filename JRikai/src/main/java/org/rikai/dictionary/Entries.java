@@ -28,7 +28,7 @@ import java.util.List;
  * 
  * Basically, Entries contains all possible deinflected words of a given word (not stored in here).
  */
-public class Entries extends ArrayList<AbstractEntry> {
+public class Entries<T extends AbstractEntry> extends ArrayList<T> {
 
 	/**
 	 * 
@@ -52,10 +52,9 @@ public class Entries extends ArrayList<AbstractEntry> {
 	 * @param complete
 	 * @param maxLen
 	 */
-	protected Entries(ArrayList<AbstractEntry> entries, boolean complete, int maxLen) {
+	protected Entries(ArrayList<T> entries, boolean complete) {
 		this.addAll(entries);
 		this.complete = complete;
-		this.maxLen = maxLen;
 	}
 
 	public void setMaxLen(int len) {
@@ -66,6 +65,11 @@ public class Entries extends ArrayList<AbstractEntry> {
 		return this.maxLen;
 	}
 
+	public boolean addAll(Entries<T> c) {
+		setMaxLen(Math.max(c.getMaxLen(), this.getMaxLen()));
+		return super.addAll(c);
+	}
+
 	/**
 	 * 
 	 * @return a list of String of each entry
@@ -73,11 +77,17 @@ public class Entries extends ArrayList<AbstractEntry> {
 	public List<String> getAllEntries() {
 		ArrayList<String> result = new ArrayList<String>(size());
 
-		for (AbstractEntry entry : this) {
+		for (T entry : this) {
 			result.add(entry.toString());
 		}
 
 		return result;
+	}
+
+	@Override
+	public boolean add(T e) {
+		// this.maxLen = Math.max(this.maxLen, e.getLength());
+		return super.add(e);
 	}
 
 	/**
@@ -88,7 +98,7 @@ public class Entries extends ArrayList<AbstractEntry> {
 
 		ArrayList<String> result = new ArrayList<String>(size());
 
-		for (AbstractEntry entry : this) {
+		for (T entry : this) {
 			result.add(entry.toStringCompact());
 		}
 
