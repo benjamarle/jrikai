@@ -16,7 +16,6 @@ along with JadeRead.  If not, see <http://www.gnu.org/licenses/>
 
 Author: Ray Zhou
 Date: 2013 04 26
-
 */
 package org.rikai.deinflector;
 
