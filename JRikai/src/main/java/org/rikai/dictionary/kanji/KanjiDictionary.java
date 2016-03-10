@@ -10,13 +10,15 @@ import org.rikai.dictionary.Dictionary;
 import org.rikai.dictionary.DictionaryNotLoadedException;
 import org.rikai.dictionary.Entries;
 
-public class KanjiDictionary extends HashMap<Character, KanjiEntry>implements Dictionary {
+public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements Dictionary {
 
 	private static final long serialVersionUID = -6219548581660831150L;
 
 	private boolean isLoaded;
 
 	private String path;
+
+	private int maxNbQueries = 1;
 
 	public KanjiDictionary(String path) {
 		super(13000);
@@ -88,14 +90,17 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry>implements Di
 		return new KanjiEntry(kanjiChar);
 	}
 
-	public Entries query(String q) {
+	public Entries<KanjiEntry> query(String q) {
 		if (!this.isLoaded()) {
 			throw new DictionaryNotLoadedException();
 		}
-		char firstChar = q.charAt(0);
-		Entries entries = new Entries();
-		KanjiEntry kanjiEntry = get(firstChar);
-		if (kanjiEntry != null) {
+		Entries<KanjiEntry> entries = new Entries<KanjiEntry>();
+		int maxIndex = Math.min(q.length(), maxNbQueries);
+		for (int i = 0, n = maxIndex; i < n; i++) {
+			char c = q.charAt(i);
+			KanjiEntry kanjiEntry = get(c);
+			if (kanjiEntry == null)
+				return entries;
 			entries.add(kanjiEntry);
 		}
 		return entries;
