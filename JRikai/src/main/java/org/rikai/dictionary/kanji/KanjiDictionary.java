@@ -25,6 +25,11 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 		this.path = path;
 	}
 
+	public KanjiDictionary(String path, int maxNbQueries) {
+		this(path);
+		this.maxNbQueries = maxNbQueries;
+	}
+
 	public void load() {
 		try {
 			loadDictionary(this.path);
@@ -108,6 +113,21 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 
 	public void close() {
 		this.clear();
+	}
+
+	/**
+	 * @return the maxNbQueries
+	 */
+	public int getMaxNbQueries() {
+		return maxNbQueries;
+	}
+
+	/**
+	 * @param maxNbQueries
+	 *            the maxNbQueries to set
+	 */
+	public void setMaxNbQueries(int maxNbQueries) {
+		this.maxNbQueries = maxNbQueries;
 	}
 
 }
