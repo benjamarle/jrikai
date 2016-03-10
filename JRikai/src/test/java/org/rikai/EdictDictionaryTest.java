@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.rikai.dictionary.DictionaryNotLoadedException;
 import org.rikai.dictionary.Entries;
 import org.rikai.dictionary.edict.EdictDictionary;
+import org.rikai.dictionary.edict.EdictEntry;
 
 /**
  * @author Benjamin
@@ -44,7 +45,7 @@ public class EdictDictionaryTest {
 	 */
 	@Test
 	public void testWordSearchInflected() {
-		Entries wordSearch = edictDictionary.wordSearch(INFLECTED_VERB);
+		Entries<EdictEntry> wordSearch = edictDictionary.wordSearch(INFLECTED_VERB);
 		assertEquals(wordSearch.size(), 10);
 	}
 
@@ -53,7 +54,7 @@ public class EdictDictionaryTest {
 	 */
 	@Test
 	public void testWordSearchMaxLength() {
-		Entries wordSearch = edictDictionary.wordSearch(INFLECTED_VERB);
+		Entries<EdictEntry> wordSearch = edictDictionary.wordSearch(INFLECTED_VERB);
 		assertEquals(wordSearch.getMaxLen(), 2);
 	}
 
@@ -62,7 +63,7 @@ public class EdictDictionaryTest {
 	 */
 	@Test
 	public void testKanjiWordSearchMaxLength() {
-		Entries wordSearch = edictDictionary.wordSearch(KANJI_WORD);
+		Entries<EdictEntry> wordSearch = edictDictionary.wordSearch(KANJI_WORD);
 		assertEquals(wordSearch.getMaxLen(), 1);
 	}
 
@@ -71,7 +72,7 @@ public class EdictDictionaryTest {
 	 */
 	@Test
 	public void testWordSearch() {
-		Entries wordSearch = edictDictionary.wordSearch(NON_INFLECTED_VERB);
+		Entries<EdictEntry> wordSearch = edictDictionary.wordSearch(NON_INFLECTED_VERB);
 		assertEquals(wordSearch.size(), 2);
 	}
 

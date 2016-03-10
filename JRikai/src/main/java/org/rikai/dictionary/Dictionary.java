@@ -1,8 +1,8 @@
 package org.rikai.dictionary;
 
-public interface Dictionary {
+public interface Dictionary<T extends AbstractEntry> {
 
-	Entries query(String q);
+	Entries<T> query(String q);
 
 	void load();
 

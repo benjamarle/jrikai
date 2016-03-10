@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 import org.rikai.dictionary.Entries;
+import org.rikai.dictionary.edict.EdictEntry;
 import org.rikai.dictionary.edict.NamesDictionary;
 
 public class NamesDictionaryTest {
@@ -19,7 +20,7 @@ public class NamesDictionaryTest {
 
 	@Test
 	public void test() {
-		Entries wordSearch = namesDictionary.wordSearch("田中");
+		Entries<EdictEntry> wordSearch = namesDictionary.wordSearch("田中");
 		assertFalse(wordSearch.isEmpty());
 	}
 

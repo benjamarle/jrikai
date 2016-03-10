@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rikai.deinflector.Deinflector;
 import org.rikai.dictionary.Entries;
+import org.rikai.dictionary.edict.EdictEntry;
 import org.rikai.dictionary.edict.WordEdictDictionary;
 
 public class WordEdictDictionaryTest {
@@ -22,7 +23,7 @@ public class WordEdictDictionaryTest {
 
 	@Test
 	public void testWordSearch() throws SQLException {
-		Entries wordSearch = wordDictionary.wordSearch("食べられる");
+		Entries<EdictEntry> wordSearch = wordDictionary.wordSearch("食べられる");
 		assertFalse(wordSearch.isEmpty());
 	}
 

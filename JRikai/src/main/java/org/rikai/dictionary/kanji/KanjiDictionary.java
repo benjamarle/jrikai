@@ -10,7 +10,7 @@ import org.rikai.dictionary.Dictionary;
 import org.rikai.dictionary.DictionaryNotLoadedException;
 import org.rikai.dictionary.Entries;
 
-public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements Dictionary {
+public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements Dictionary<KanjiEntry> {
 
 	private static final long serialVersionUID = -6219548581660831150L;
 

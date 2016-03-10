@@ -23,7 +23,7 @@ public class NamesDictionary extends EdictDictionary {
 	 * @return all the variants of the specified word
 	 */
 	@Override
-	public Entries wordSearch(String word) {
+	public Entries<EdictEntry> wordSearch(String word) {
 		return wordSearch(word, DEFAULT_MAX_COUNT);
 	}
 

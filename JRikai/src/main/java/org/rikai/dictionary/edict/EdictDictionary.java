@@ -35,7 +35,7 @@ import org.rikai.dictionary.db.ResultCursor;
 import org.rikai.dictionary.db.SqliteDatabase;
 import org.rikai.utils.JapaneseConverter;
 
-public class EdictDictionary implements Dictionary {
+public class EdictDictionary implements Dictionary<EdictEntry> {
 
 	private static final String SEARCH_QUERY = " SELECT * " + " FROM dict" + " WHERE kanji = ? OR kana = ?";
 	private static final int DEFAULT_MAX_COUNT = 10;
@@ -69,11 +69,12 @@ public class EdictDictionary implements Dictionary {
 	 *            the base word
 	 * @return all the variants of the specified word
 	 */
-	public Entries wordSearch(String word) {
+
+	public Entries<EdictEntry> wordSearch(String word) {
 		return wordSearch(word, DEFAULT_MAX_COUNT);
 	}
 
-	public Entries query(String q) {
+	public Entries<EdictEntry> query(String q) {
 		return wordSearch(q);
 	}
 
@@ -86,7 +87,7 @@ public class EdictDictionary implements Dictionary {
 	 *            maximum number of variants to return, default to DEFAULT_MAX_COUNT
 	 * @return an Entries encompassing the results.
 	 */
-	public Entries wordSearch(String word, int maxCount) {
+	public Entries<EdictEntry> wordSearch(String word, int maxCount) {
 
 		int[] trueLen = new int[word.length()]; // modify by toHiragana
 		word = JapaneseConverter.toHiragana(word, true, trueLen);
@@ -95,7 +96,7 @@ public class EdictDictionary implements Dictionary {
 		int count = 0;
 
 		// final result
-		Entries result = new Entries();
+		Entries<EdictEntry> result = new Entries<EdictEntry>();
 
 		SEARCH_WORDS: while (word.length() > 0) {
 			// current word, plus all of its possible deinflected words
