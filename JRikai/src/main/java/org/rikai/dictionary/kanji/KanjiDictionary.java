@@ -38,6 +38,8 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 
 	private int maxNbQueries = 1;
 
+	private boolean stopAtFirstNonKanji = true;
+
 	public KanjiDictionary(String path) {
 		super(13000);
 		this.path = path;
@@ -114,6 +116,10 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 	}
 
 	public Entries<KanjiEntry> query(String q) {
+		return query(q, this.stopAtFirstNonKanji);
+	}
+
+	public Entries<KanjiEntry> query(String q, boolean stopAtFirstNonKanji) {
 		if (!this.isLoaded()) {
 			throw new DictionaryNotLoadedException();
 		}
@@ -122,11 +128,30 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 		for (int i = 0, n = maxIndex; i < n; i++) {
 			char c = q.charAt(i);
 			KanjiEntry kanjiEntry = get(c);
-			if (kanjiEntry == null)
-				return entries;
+			if (kanjiEntry == null) {
+				if (stopAtFirstNonKanji)
+					return entries;
+				else
+					continue;
+			}
 			entries.add(kanjiEntry);
 		}
 		return entries;
+	}
+
+	/**
+	 * @return the stopAtFirstNonKanji
+	 */
+	public boolean isStopAtFirstNonKanji() {
+		return stopAtFirstNonKanji;
+	}
+
+	/**
+	 * @param stopAtFirstNonKanji
+	 *            the stopAtFirstNonKanji to set
+	 */
+	public void setStopAtFirstNonKanji(boolean stopAtFirstNonKanji) {
+		this.stopAtFirstNonKanji = stopAtFirstNonKanji;
 	}
 
 	public void close() {
