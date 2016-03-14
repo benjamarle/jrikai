@@ -172,7 +172,7 @@ public class EdictDictionary implements Dictionary<EdictEntry> {
 
 	protected EdictEntry buildEntry(ResultCursor cursor, DeinflectedWord variant) {
 		String reason = "";
-		if (variant.getReason() != "") {
+		if (!variant.getReason().equals("")) {
 			reason = "< " + variant.getReason() + " < " + variant.getOriginalWord();
 		}
 
