@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.sql.SQLException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.rikai.deinflector.Deinflector;
@@ -13,6 +14,7 @@ import org.rikai.dictionary.edict.WordEdictDictionary;
 
 public class WordEdictDictionaryTest {
 
+	private static final String INFLECTED_VERB = "食べられる";
 	private WordEdictDictionary wordDictionary;
 
 	@Before
@@ -23,8 +25,13 @@ public class WordEdictDictionaryTest {
 
 	@Test
 	public void testWordSearch() throws SQLException {
-		Entries<EdictEntry> wordSearch = wordDictionary.wordSearch("食べられる");
+		Entries<EdictEntry> wordSearch = wordDictionary.wordSearch(INFLECTED_VERB);
 		assertFalse(wordSearch.isEmpty());
+		boolean originalDiffMatch = false;
+		for (EdictEntry edictEntry : wordSearch) {
+			originalDiffMatch |= edictEntry.getOriginalWord().equals(edictEntry.getWord());
+		}
+		Assert.assertTrue(originalDiffMatch);
 	}
 
 }

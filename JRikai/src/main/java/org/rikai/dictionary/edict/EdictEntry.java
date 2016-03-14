@@ -46,8 +46,6 @@ public class EdictEntry extends AbstractEntry {
 	/** the inflection reason */
 	private String reason = "";
 
-	private String deinflected = "";
-
 	public EdictEntry() {
 	}
 
@@ -181,25 +179,19 @@ public class EdictEntry extends AbstractEntry {
 	}
 
 	/**
-	 * @return the deinflected
-	 */
-	public String getDeinflected() {
-		return this.deinflected;
-	}
-
-	/**
-	 * @param deinflected
-	 *            the deinflected to set
-	 */
-	public void setDeinflected(String deinflected) {
-		this.deinflected = deinflected;
-	}
-
-	/**
 	 * @return the length
 	 */
 	public int getLength() {
-		return variant.getOriginalWord().length();
+		return getOriginalWord().length();
+	}
+
+	/**
+	 * @return the original word prior to deinflection if there was one, otherwise gives back the matched word
+	 */
+	public String getOriginalWord() {
+		if (variant == null)
+			this.getWord();
+		return variant.getOriginalWord();
 	}
 
 	/**
