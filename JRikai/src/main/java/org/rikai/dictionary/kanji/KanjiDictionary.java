@@ -20,7 +20,9 @@ package org.rikai.dictionary.kanji;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
@@ -34,25 +36,37 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 
 	private boolean isLoaded;
 
-	private String path;
-
 	private int maxNbQueries = 1;
 
 	private boolean stopAtFirstNonKanji = true;
 
-	public KanjiDictionary(String path) {
+	private InputStream inputStream;
+
+	public KanjiDictionary(InputStream inputStream) {
 		super(13000);
-		this.path = path;
+		this.inputStream = inputStream;
 	}
 
-	public KanjiDictionary(String path, int maxNbQueries) {
+	public KanjiDictionary(InputStream inputStream, int maxNbQueries) throws FileNotFoundException {
+		this(inputStream);
+		this.maxNbQueries = maxNbQueries;
+	}
+
+	public KanjiDictionary(String path) throws FileNotFoundException {
+		this(new FileInputStream(path));
+	}
+
+	public KanjiDictionary(String path, int maxNbQueries) throws FileNotFoundException {
 		this(path);
 		this.maxNbQueries = maxNbQueries;
 	}
 
 	public void load() {
+		if (this.isLoaded) {
+			return;
+		}
 		try {
-			loadDictionary(this.path);
+			loadDictionary(this.inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -67,11 +81,11 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 		return this.isLoaded;
 	}
 
-	private void loadDictionary(String path) throws IOException {
+	private void loadDictionary(InputStream inputStream) throws IOException {
 		if (this.isLoaded()) {
 			this.close();
 		}
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(this.inputStream, "UTF-8"));
 
 		String line = null;
 		while ((line = reader.readLine()) != null) {
@@ -103,12 +117,17 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 		kanjiEntry.setNanori(nanoriStr);
 
 		String bushumeiStr = split[4];
-		kanjiEntry.setBushmei(bushumeiStr);
+		kanjiEntry.setBushumei(bushumeiStr);
 
 		String definitionStr = split[5];
 		kanjiEntry.setDefinition(definitionStr);
 
+		postParsingProcessing(kanjiEntry);
 		return kanjiEntry;
+	}
+
+	protected void postParsingProcessing(KanjiEntry entry) {
+
 	}
 
 	protected KanjiEntry makeEntry(char kanjiChar) {

@@ -21,6 +21,7 @@ package org.rikai.deinflector;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +35,15 @@ public class Deinflector {
 	private ArrayList<RuleGroup> ruleGroups = new ArrayList<RuleGroup>();
 
 	public Deinflector(String path) throws FileNotFoundException, IOException {
-		loadDeinflectionData(path);
+		loadDeinflectionData(new FileInputStream(path));
 	}
 
-	private boolean loadDeinflectionData(String path) throws FileNotFoundException, IOException {
-		List<String> difData = IOUtils.readLines(new FileInputStream(path), "UTF-8");
+	public Deinflector(InputStream inputStream) throws IOException {
+		loadDeinflectionData(inputStream);
+	}
+
+	private boolean loadDeinflectionData(InputStream inputStream) throws IOException {
+		List<String> difData = IOUtils.readLines(inputStream, "UTF-8");
 
 		if (difData.size() == 0) {
 			return false;

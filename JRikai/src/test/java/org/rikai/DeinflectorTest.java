@@ -17,19 +17,22 @@ import org.rikai.deinflector.Deinflector;
  *
  */
 public class DeinflectorTest {
-	
+
 	private Deinflector deinflector;
 
-	
 	@Before
-	public void setUp() throws FileNotFoundException, IOException{
-		deinflector = new Deinflector("C:\\deinflect.dat");
+	public void setUp() throws FileNotFoundException, IOException {
+		deinflector = getNewDeinflector();
 	}
-	
+
+	private Deinflector getNewDeinflector() throws IOException {
+		return new Deinflector(this.getClass().getResourceAsStream("/deinflect.dat"));
+	}
+
 	@Test
 	public void test() {
 		ArrayList<DeinflectedWord> deinflect = deinflector.deinflect("嬉しくありませんでした");
-		
+
 		assert deinflect.size() > 0;
 	}
 

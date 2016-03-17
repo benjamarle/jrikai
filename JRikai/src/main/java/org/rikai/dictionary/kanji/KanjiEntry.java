@@ -47,7 +47,7 @@ public class KanjiEntry extends AbstractEntry {
 
 	private String nanori;
 
-	private String bushmei;
+	private String bushumei;
 
 	public KanjiEntry(Character kanji) {
 		super();
@@ -140,16 +140,16 @@ public class KanjiEntry extends AbstractEntry {
 	/**
 	 * @return the bushmei
 	 */
-	public String getBushmei() {
-		return this.bushmei;
+	public String getBushumei() {
+		return this.bushumei;
 	}
 
 	/**
 	 * @param bushmei
 	 *            the bushmei to set
 	 */
-	public void setBushmei(String bushmei) {
-		this.bushmei = bushmei;
+	public void setBushumei(String bushmei) {
+		this.bushumei = bushmei;
 	}
 
 	/*
@@ -219,6 +219,10 @@ public class KanjiEntry extends AbstractEntry {
 		result.append('\n');
 		result.append(this.definition).append(" [").append(this.yomi).append("]");
 		return result.toString();
+	}
+
+	public String toKanjiDicLine() {
+		return kanji + "|" + miscString + "|" + yomi + "|" + nanori + "|" + bushumei + "|" + definition;
 	}
 
 	/**
