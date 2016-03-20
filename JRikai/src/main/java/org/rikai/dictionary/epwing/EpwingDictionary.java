@@ -26,6 +26,7 @@ public class EpwingDictionary implements Dictionary<EpwingEntry> {
 
 	public EpwingDictionary(String path) {
 		this.path = path;
+		load();
 	}
 
 	/*
@@ -75,12 +76,12 @@ public class EpwingDictionary implements Dictionary<EpwingEntry> {
 		return entries;
 	}
 
-	private String processText(String text) {
+	protected String removeGaiji(String text) {
 		return text.replaceAll("\\[GAIJI=w.{4}\\]", "");
 	}
 
 	protected EpwingEntry makeEntry(String originalWord, String heading, String text) {
-		return new EpwingEntry(originalWord, heading, processText(text));
+		return new EpwingEntry(originalWord, heading, removeGaiji(text));
 	}
 
 	/*
