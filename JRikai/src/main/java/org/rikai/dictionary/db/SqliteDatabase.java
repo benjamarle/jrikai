@@ -40,6 +40,6 @@ public interface SqliteDatabase {
 
 	boolean isLoaded();
 
-	ResultCursor findWord(String word);
+	ResultCursor findWord(String... param);
 
 }

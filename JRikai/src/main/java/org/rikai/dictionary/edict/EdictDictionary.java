@@ -55,7 +55,7 @@ import org.rikai.utils.JapaneseConverter;
 
 public class EdictDictionary implements Dictionary<EdictEntry> {
 
-	private static final String SEARCH_QUERY = " SELECT * " + " FROM dict" + " WHERE kanji = ? OR kana = ?";
+	private static final String SEARCH_QUERY = " SELECT DISTINCT * " + " FROM dict" + " WHERE kanji = ? OR kana = ?";
 	private static final int DEFAULT_MAX_COUNT = 10;
 
 	private String path;
@@ -128,7 +128,7 @@ public class EdictDictionary implements Dictionary<EdictEntry> {
 				// find this deinflected word in the dictionary.
 				// if cursor.count() > 0, that means this is a valid word
 				String variantWord = variant.getWord();
-				ResultCursor cursor = this.sqliteDatabase.findWord(variantWord);
+				ResultCursor cursor = this.sqliteDatabase.findWord(variantWord, variantWord);
 
 				while (cursor.next()) {
 
