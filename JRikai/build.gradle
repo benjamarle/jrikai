@@ -10,6 +10,7 @@ jar {
         attributes 'Implementation-Title': 'JRikai',
                    'Implementation-Version': version
     }
+    
    
 }
 
