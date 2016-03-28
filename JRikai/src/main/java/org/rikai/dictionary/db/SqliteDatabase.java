@@ -42,4 +42,6 @@ public interface SqliteDatabase {
 
 	ResultCursor findWord(String... param);
 
+	ResultCursor select(String query, String... param);
+
 }

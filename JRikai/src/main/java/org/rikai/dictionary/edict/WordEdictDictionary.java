@@ -18,39 +18,39 @@ Author: Benjamin Marlé
 */
 package org.rikai.dictionary.edict;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.deinflector.Deinflector;
 import org.rikai.dictionary.db.SqliteDatabase;
 
-public class WordEdictDictionary extends EdictDictionary {
+public class WordEdictDictionary extends EdictDictionary<EdictEntry> {
 
 	private Pattern pattern = Pattern.compile("[,\\(\\)]");
-	private Deinflector deinflector;
 
 	public WordEdictDictionary(String path, Deinflector deinflector, SqliteDatabase sqliteDatabaseImpl) {
-		super(path, sqliteDatabaseImpl);
-		this.deinflector = deinflector;
+		super(path, deinflector, sqliteDatabaseImpl);
 	}
 
 	public WordEdictDictionary(String path, Deinflector deinflector) {
+		super(path, deinflector);
+	}
+
+	public WordEdictDictionary(String path, SqliteDatabase sqliteDatabaseImpl) {
+		super(path, sqliteDatabaseImpl);
+	}
+
+	public WordEdictDictionary(String path) {
 		super(path);
-		this.deinflector = deinflector;
 	}
 
 	@Override
-	protected List<DeinflectedWord> deinflectWord(String word) {
-		return this.deinflector.deinflect(word);
-	}
+	protected boolean isValid(DeinflectedWord variant, EdictEntry entry) {
 
-	@Override
-	protected boolean isValid(DeinflectedWord variant, String definition) {
 		if (variant.isOriginal()) {
 			return true;
 		}
-		String[] parts = this.pattern.split(definition);
+		String[] parts = this.pattern.split(entry.getGloss());
 
 		for (String currentPart : parts) {
 
@@ -74,6 +74,10 @@ public class WordEdictDictionary extends EdictDictionary {
 			}
 		}
 		return false;
+	}
+
+	protected EdictEntry makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason) {
+		return new EdictEntry(variant, kanji, kana, entry, reason);
 	}
 
 }

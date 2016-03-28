@@ -34,6 +34,21 @@ public class JapaneseConverter {
 	 *            if true, conversion is stopped when a non-japanese char is encountered
 	 * @return the hiragana
 	 */
+	public static String toHiragana(String word, boolean discard) {
+		return toHiragana(word, discard, null);
+	}
+
+	/**
+	 * convert katakana and half-width kana to full-width hiragana
+	 *
+	 * @param word
+	 *            the word to convert
+	 * @param discard
+	 *            if true, conversion is stopped when a non-japanese char is encountered
+	 * @param trueLen
+	 *            output for the actual length of the word
+	 * @return the hiragana
+	 */
 	public static String toHiragana(String word, boolean discard, int[] trueLen) {
 		char u, v;
 		char previous = 0;

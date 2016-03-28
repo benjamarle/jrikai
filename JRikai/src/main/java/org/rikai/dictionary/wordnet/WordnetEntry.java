@@ -1,10 +1,11 @@
 package org.rikai.dictionary.wordnet;
 
-import org.rikai.dictionary.AbstractEntry;
+import org.rikai.deinflector.DeinflectedWord;
+import org.rikai.dictionary.deinflectable.DeinflectedEntry;
 
-public class WordnetEntry extends AbstractEntry {
+public class WordnetEntry extends DeinflectedEntry {
 
-	private String word;
+	private String synset;
 
 	private String gloss;
 
@@ -14,23 +15,54 @@ public class WordnetEntry extends AbstractEntry {
 
 	private int freq;
 
+	private String partOfSpeech;
+
 	public WordnetEntry() {
 
 	}
 
-	public WordnetEntry(String word, String gloss, String rank, int lexid, int freq) {
-		super();
+	public WordnetEntry(DeinflectedWord variant, String word, String synset, String reason, String pos, String gloss,
+			String rank, int lexid, int freq) {
+		super(variant, word, reason);
 		this.word = word;
+		this.synset = synset;
 		this.gloss = gloss;
 		this.rank = rank;
 		this.lexid = lexid;
 		this.freq = freq;
+		this.partOfSpeech = pos;
 	}
 
+	/**
+	 * return a string representation of this entry
+	 * 
+	 * @return a string representation of this entry
+	 */
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+
+		result.append(this.word).append(' ');
+
+		result.append(this.gloss);
+
+		return result.toString();
+	}
+
+	/**
+	 * return a string representation of this entry in a compact form (max 1 newline character)
+	 * 
+	 * @return a string representation of this entry in a compact form.
+	 */
+	@Override
 	public String toStringCompact() {
 		StringBuilder result = new StringBuilder();
 
-		result.append(this.word);
+		result.append(this.word).append(' ');
+
+		if (this.reason.length() != 0) {
+			result.append("(").append(this.reason).append(")");
+		}
 
 		result.append('\n').append(this.gloss);
 
@@ -40,21 +72,6 @@ public class WordnetEntry extends AbstractEntry {
 	@Override
 	public int getLength() {
 		return this.word.length();
-	}
-
-	/**
-	 * @return the word
-	 */
-	public String getWord() {
-		return word;
-	}
-
-	/**
-	 * @param word
-	 *            the word to set
-	 */
-	public void setWord(String word) {
-		this.word = word;
 	}
 
 	/**
@@ -115,6 +132,36 @@ public class WordnetEntry extends AbstractEntry {
 	 */
 	public void setFreq(int freq) {
 		this.freq = freq;
+	}
+
+	/**
+	 * @return the partOfSpeech
+	 */
+	public String getPartOfSpeech() {
+		return partOfSpeech;
+	}
+
+	/**
+	 * @param partOfSpeech
+	 *            the partOfSpeech to set
+	 */
+	public void setPartOfSpeech(String partOfSpeech) {
+		this.partOfSpeech = partOfSpeech;
+	}
+
+	/**
+	 * @return the synset
+	 */
+	public String getSynset() {
+		return synset;
+	}
+
+	/**
+	 * @param synset
+	 *            the synset to set
+	 */
+	public void setSynset(String synset) {
+		this.synset = synset;
 	}
 
 }

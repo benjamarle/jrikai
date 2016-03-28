@@ -42,135 +42,33 @@ If you are interested in the FireFox plugin, please visit www.polarcloud.com/rik
 */
 package org.rikai.dictionary.edict;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.rikai.deinflector.DeinflectedWord;
-import org.rikai.dictionary.Dictionary;
-import org.rikai.dictionary.Entries;
-import org.rikai.dictionary.db.JdbcSqliteDatabase;
+import org.rikai.deinflector.Deinflector;
 import org.rikai.dictionary.db.ResultCursor;
 import org.rikai.dictionary.db.SqliteDatabase;
-import org.rikai.utils.JapaneseConverter;
+import org.rikai.dictionary.deinflectable.DeinflectableDictionary;
 
-public class EdictDictionary implements Dictionary<EdictEntry> {
+public abstract class EdictDictionary<T extends EdictEntry> extends DeinflectableDictionary<T> {
 
 	private static final String SEARCH_QUERY = " SELECT DISTINCT * " + " FROM dict" + " WHERE kanji = ? OR kana = ?";
-	private static final int DEFAULT_MAX_COUNT = 10;
 
-	private String path;
+	public EdictDictionary(String path, Deinflector deinflector, SqliteDatabase sqliteDatabaseImpl) {
+		super(path, deinflector, sqliteDatabaseImpl);
+	}
 
-	private SqliteDatabase sqliteDatabase;
-
-	public EdictDictionary(String path) {
-		this(path, new JdbcSqliteDatabase());
+	public EdictDictionary(String path, Deinflector deinflector) {
+		super(path, deinflector);
 	}
 
 	public EdictDictionary(String path, SqliteDatabase sqliteDatabaseImpl) {
-		this.sqliteDatabase = sqliteDatabaseImpl;
-		this.sqliteDatabase.setSearchQuery(SEARCH_QUERY);
-		this.path = path;
+		super(path, sqliteDatabaseImpl);
 	}
 
-	public void load() {
-		this.sqliteDatabase.loadEdict(this.path);
+	public EdictDictionary(String path) {
+		super(path);
 	}
 
-	public boolean isLoaded() {
-		return this.sqliteDatabase.isLoaded();
-	}
-
-	/**
-	 * find all variants of the specified word, if any
-	 *
-	 * @param word
-	 *            the base word
-	 * @return all the variants of the specified word
-	 */
-
-	public Entries<EdictEntry> wordSearch(String word) {
-		return wordSearch(word, DEFAULT_MAX_COUNT);
-	}
-
-	public Entries<EdictEntry> query(String q) {
-		return wordSearch(q);
-	}
-
-	/**
-	 * finds all possible deinflected words of the given word
-	 *
-	 * @param word
-	 *            the word to search for
-	 * @param maxCount
-	 *            maximum number of variants to return, default to DEFAULT_MAX_COUNT
-	 * @return an Entries encompassing the results.
-	 */
-	public Entries<EdictEntry> wordSearch(String word, int maxCount) {
-
-		int[] trueLen = new int[word.length()]; // modify by toHiragana
-		word = JapaneseConverter.toHiragana(word, true, trueLen);
-
-		maxCount = maxCount > 0 ? maxCount : DEFAULT_MAX_COUNT;
-		int count = 0;
-
-		// final result
-		Entries<EdictEntry> result = new Entries<EdictEntry>();
-
-		SEARCH_WORDS: while (word.length() > 0) {
-			// current word, plus all of its possible deinflected words
-			List<DeinflectedWord> variants = deinflectWord(word);
-
-			// search dictionary and see if each deinflected word exists
-			for (int i = 0; i < variants.size(); i++) {
-
-				DeinflectedWord variant = variants.get(i);
-
-				// find this deinflected word in the dictionary.
-				// if cursor.count() > 0, that means this is a valid word
-				String variantWord = variant.getWord();
-				ResultCursor cursor = this.sqliteDatabase.findWord(variantWord, variantWord);
-
-				while (cursor.next()) {
-
-					String definition = cursor.getValue("entry");
-
-					// check if the entry is a valid de-inflected word
-					boolean valid = isValid(variant, definition);
-
-					if (valid) {
-						result.add(buildEntry(cursor, variant));
-
-						if (result.size() == 1) {
-							// the first word has the longest length of the variants because
-							// this loop find words by keep taking away characters from the end
-							result.setMaxLen(word.length());
-						}
-
-						if (++count >= maxCount) {
-							result.setComplete(true);
-							cursor.close();
-							break SEARCH_WORDS;
-							// no need to search anymore, break out of all loops
-						}
-					}
-				}
-				cursor.close();
-			}
-			word = word.substring(0, word.length() - 1);
-		}
-
-		return result;
-	}
-
-	protected List<DeinflectedWord> deinflectWord(String word) {
-		return Collections.singletonList(new DeinflectedWord(word));
-	}
-
-	protected boolean isValid(DeinflectedWord variant, String definition) {
-		return true;
-	}
-
-	protected EdictEntry buildEntry(ResultCursor cursor, DeinflectedWord variant) {
+	protected T buildEntry(ResultCursor cursor, DeinflectedWord variant) {
 		String reason = "";
 		if (!variant.getReason().equals("")) {
 			reason = "< " + variant.getReason() + " < " + variant.getOriginalWord();
@@ -182,12 +80,16 @@ public class EdictDictionary implements Dictionary<EdictEntry> {
 		return makeEntry(variant, cursor.getValue("kanji"), cursor.getValue("kana"), cursor.getValue("entry"), reason);
 	}
 
-	protected EdictEntry makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason) {
-		return new EdictEntry(variant, kanji, kana, entry, reason);
+	protected abstract T makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason);
+
+	public String getSearchQuery() {
+		return SEARCH_QUERY;
 	}
 
-	public void close() {
-		this.sqliteDatabase.close();
+	protected ResultCursor findWord(DeinflectedWord variant) {
+		String variantWord = variant.getWord();
+		ResultCursor cursor = this.sqliteDatabase.findWord(variantWord, variantWord);
+		return cursor;
 	}
 
 }

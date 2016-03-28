@@ -21,7 +21,7 @@ Date: 2013 04 26
 package org.rikai.dictionary.edict;
 
 import org.rikai.deinflector.DeinflectedWord;
-import org.rikai.dictionary.AbstractEntry;
+import org.rikai.dictionary.deinflectable.DeinflectedEntry;
 
 /**
  * a dictionary entry consists of the word and the definition (optionally the reading)
@@ -29,22 +29,13 @@ import org.rikai.dictionary.AbstractEntry;
  * @author ray
  *
  */
-public class EdictEntry extends AbstractEntry {
-
-	/** variant */
-	private DeinflectedWord variant;
-
-	/** the word **/
-	private String word = "";
+public class EdictEntry extends DeinflectedEntry {
 
 	/** the reading of this word in hiragana, if exists */
 	private String reading = "";
 
 	/** the definition of the word */
 	private String gloss = "";
-
-	/** the inflection reason */
-	private String reason = "";
 
 	public EdictEntry() {
 	}
@@ -102,15 +93,6 @@ public class EdictEntry extends AbstractEntry {
 	}
 
 	/**
-	 * returns the word of this entry
-	 * 
-	 * @return the word of this entry
-	 */
-	public String getWord() {
-		return this.word;
-	}
-
-	/**
 	 * return a string representation of this entry in a compact form (max 1 newline character)
 	 * 
 	 * @return a string representation of this entry in a compact form.
@@ -164,41 +146,9 @@ public class EdictEntry extends AbstractEntry {
 	}
 
 	/**
-	 * @return the reason
-	 */
-	public String getReason() {
-		return this.reason;
-	}
-
-	/**
-	 * @param reason
-	 *            the reason to set
-	 */
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
-
-	/**
 	 * @return the length
 	 */
 	public int getLength() {
 		return getOriginalWord().length();
-	}
-
-	/**
-	 * @return the original word prior to deinflection if there was one, otherwise gives back the matched word
-	 */
-	public String getOriginalWord() {
-		if (variant == null)
-			this.getWord();
-		return variant.getOriginalWord();
-	}
-
-	/**
-	 * @param word
-	 *            the word to set
-	 */
-	public void setWord(String word) {
-		this.word = word;
 	}
 }

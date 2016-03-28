@@ -124,6 +124,29 @@ public class JdbcSqliteDatabase implements SqliteDatabase {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.rikai.dictionary.db.SqliteDatabase#select(java.lang.String, java.lang.String[])
+	 */
+	public ResultCursor select(String query, String... param) {
+		if (!this.isLoaded()) {
+			throw new DictionaryNotLoadedException();
+		}
+
+		try {
+			PreparedStatement s = this.database.prepareStatement(query);
+			for (int i = 0; i < param.length; i++) {
+				s.setString(i + 1, param[i]);
+			}
+
+			return new JdbcResultCursor(s.executeQuery());
+		} catch (SQLException e) {
+			throw new DatabaseException(
+					"Could not complete the query (" + query + ") for param : " + Arrays.toString(param), e);
+		}
+	}
+
 	public static class JdbcResultCursor implements ResultCursor {
 		private ResultSet resultSet;
 
