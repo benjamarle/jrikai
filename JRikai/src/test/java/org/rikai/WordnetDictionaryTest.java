@@ -12,7 +12,7 @@ public class WordnetDictionaryTest {
 
 	@Test
 	public void testBasicSearch() {
-		WordnetDictionary wDic = new WordnetDictionary("C:\\Users\\Benjamin\\Desktop\\wnjpn.db");
+		WordnetDictionary wDic = new WordnetDictionary("C:\\Users\\Benjamin\\Desktop\\wordnet.sqlite");
 		wDic.load();
 		Entries<WordnetEntry> query = wDic.query(KANJI_WORD);
 		for (WordnetEntry wordnetEntry : query) {

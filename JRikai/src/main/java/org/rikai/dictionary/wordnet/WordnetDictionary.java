@@ -8,7 +8,9 @@ import org.rikai.dictionary.db.SqliteDatabase;
 
 public class WordnetDictionary implements Dictionary<WordnetEntry> {
 
-	private static String SEARCH_QUERY = "SELECT DISTINCT w.lemma, s.rank, s.freq, s.lexid, s.src, d.lang, d.def, d.sid FROM word w LEFT JOIN sense s ON (w.wordid = s.wordid) LEFT JOIN synset_def d ON (s.synset = d.synset) WHERE w.lemma = ? AND w.lang = 'jpn' AND d.lang = ? AND s.lang = 'jpn' AND d.def NOT LIKE '%;%'";
+	private static String SEARCH_QUERY = "SELECT DISTINCT w.lemma, s.rank, s.freq, s.lexid, s.src, d.lang, d.def, d.sid FROM word w LEFT JOIN sense s ON (w.wordid = s.wordid) LEFT JOIN synset_def d ON (s.synset = d.synset) WHERE w.lemma = ? AND w.lang = 'jpn' AND d.lang = ? AND s.lang = 'jpn'";
+
+	// TODO Add examples query
 
 	private String path;
 
