@@ -97,6 +97,7 @@ public class JdbcSqliteDatabase implements SqliteDatabase {
 				// nothing to be done here
 			}
 		}
+		this.loaded = false;
 	}
 
 	/**
