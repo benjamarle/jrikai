@@ -155,6 +155,8 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 			}
 			entries.add(kanjiEntry);
 		}
+
+		entries.setMaxLen(entries.size());
 		return entries;
 	}
 
