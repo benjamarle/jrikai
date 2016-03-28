@@ -23,6 +23,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import org.rikai.dictionary.DictionaryNotLoadedException;
 
@@ -108,16 +109,18 @@ public class JdbcSqliteDatabase implements SqliteDatabase {
 	 * @return cursor
 	 * @throws SQLException
 	 */
-	public ResultCursor findWord(String word) {
+	public ResultCursor findWord(String... param) {
 		if (!this.isLoaded()) {
 			throw new DictionaryNotLoadedException();
 		}
 		try {
-			this.statement.setString(1, word);
-			this.statement.setString(2, word);
+			for (int i = 0; i < param.length; i++) {
+				this.statement.setString(i + 1, param[i]);
+			}
+
 			return new JdbcResultCursor(this.statement.executeQuery());
 		} catch (SQLException e) {
-			throw new DatabaseException("Could not complete the query for word : " + word, e);
+			throw new DatabaseException("Could not complete the query for word : " + Arrays.toString(param), e);
 		}
 	}
 
@@ -151,7 +154,15 @@ public class JdbcSqliteDatabase implements SqliteDatabase {
 			try {
 				return this.resultSet.getString(columnName);
 			} catch (SQLException e) {
-				throw new DatabaseException("Error while getting the value for colmn name [" + columnName + "]", e);
+				throw new DatabaseException("Error while getting the value for column name [" + columnName + "]", e);
+			}
+		}
+
+		public int getIntValue(String columnName) {
+			try {
+				return this.resultSet.getInt(columnName);
+			} catch (SQLException e) {
+				throw new DatabaseException("Error while getting the value for column name [" + columnName + "]", e);
 			}
 		}
 

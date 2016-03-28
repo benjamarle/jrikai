@@ -24,6 +24,8 @@ public interface ResultCursor {
 
 	String getValue(String columnName);
 
+	int getIntValue(String columnName);
+
 	void close();
 
 }
