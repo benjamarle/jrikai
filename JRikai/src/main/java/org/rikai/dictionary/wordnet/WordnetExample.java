@@ -1,5 +1,9 @@
 package org.rikai.dictionary.wordnet;
 
+/**
+ * @author Benjamin
+ *
+ */
 public class WordnetExample {
 
 	private WordnetEntry entry;
@@ -37,6 +41,13 @@ public class WordnetExample {
 	 */
 	public String getEnglishSentence() {
 		return englishSentence;
+	}
+
+	/**
+	 * @return the number
+	 */
+	public int getNumber() {
+		return number;
 	}
 
 	/*

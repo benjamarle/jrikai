@@ -18,7 +18,7 @@ public class WordnetDictionary extends DeinflectableDictionary<WordnetEntry> {
 
 	private static String EXAMPLE_QUERY = "SELECT exeng.synset, exeng.sid, exeng.def engdef, exjpn.def jpndef from synset_ex exeng, synset_ex exjpn where exeng.lang = 'eng' and exjpn.lang = 'jpn' and  exeng.sid = exjpn.sid and exeng.synset = exjpn.synset and exeng.synset = ? order by exeng.sid";
 
-	private static String SYNONYM_QUERY = "SELECT DISTINCT syn.lemma, syn.pos, s.rank, s.freq, s.lexid, s.src FROM  sense s LEFT JOIN word syn ON (syn.wordid = s.wordid) WHERE s.synset = ? AND syn.lang = ?";
+	private static String SYNONYM_QUERY = "SELECT DISTINCT syn.lemma, syn.pos FROM  sense s LEFT JOIN word syn ON (syn.wordid = s.wordid) WHERE s.synset = ? AND syn.lang = ? order by syn.lemma";
 
 	private Lang lang = Lang.ENG;
 
@@ -82,7 +82,9 @@ public class WordnetDictionary extends DeinflectableDictionary<WordnetEntry> {
 	}
 
 	private void addExamples(Entries<WordnetEntry> query) {
-		addSynonyms(query);
+		for (WordnetEntry wordnetEntry : query) {
+			wordnetEntry.setExamples(getExamples(wordnetEntry));
+		}
 	}
 
 	/*
@@ -147,6 +149,36 @@ public class WordnetDictionary extends DeinflectableDictionary<WordnetEntry> {
 			synonyms.add(value);
 		}
 		return synonyms;
+	}
+
+	/**
+	 * @return the addExamples
+	 */
+	public boolean isAddExamples() {
+		return addExamples;
+	}
+
+	/**
+	 * @param addExamples
+	 *            the addExamples to set
+	 */
+	public void setAddExamples(boolean addExamples) {
+		this.addExamples = addExamples;
+	}
+
+	/**
+	 * @return the addSynonyms
+	 */
+	public boolean isAddSynonyms() {
+		return addSynonyms;
+	}
+
+	/**
+	 * @param addSynonyms
+	 *            the addSynonyms to set
+	 */
+	public void setAddSynonyms(boolean addSynonyms) {
+		this.addSynonyms = addSynonyms;
 	}
 
 }
