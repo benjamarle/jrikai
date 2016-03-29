@@ -26,7 +26,7 @@ public class WordnetDictionaryTest {
 		wDic.load();
 		Entries<WordnetEntry> query = wDic.query(KANJI_WORD);
 		for (WordnetEntry wordnetEntry : query) {
-			System.out.println(wordnetEntry.toStringCompact());
+			System.out.println(wordnetEntry.toString());
 		}
 		Assert.assertTrue(query.size() > 0);
 	}

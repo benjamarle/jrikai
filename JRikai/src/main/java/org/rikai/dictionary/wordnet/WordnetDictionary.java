@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.deinflector.Deinflector;
+import org.rikai.dictionary.Entries;
 import org.rikai.dictionary.db.ResultCursor;
 import org.rikai.dictionary.db.SqliteDatabase;
 import org.rikai.dictionary.deinflectable.DeinflectableDictionary;
@@ -17,7 +18,13 @@ public class WordnetDictionary extends DeinflectableDictionary<WordnetEntry> {
 
 	private static String EXAMPLE_QUERY = "SELECT exeng.synset, exeng.sid, exeng.def engdef, exjpn.def jpndef from synset_ex exeng, synset_ex exjpn where exeng.lang = 'eng' and exjpn.lang = 'jpn' and  exeng.sid = exjpn.sid and exeng.synset = exjpn.synset and exeng.synset = ? order by exeng.sid";
 
+	private static String SYNONYM_QUERY = "SELECT DISTINCT syn.lemma, syn.pos, s.rank, s.freq, s.lexid, s.src FROM  sense s LEFT JOIN word syn ON (syn.wordid = s.wordid) WHERE s.synset = ? AND syn.lang = ?";
+
 	private Lang lang = Lang.ENG;
+
+	private boolean addExamples = true;
+
+	private boolean addSynonyms = true;
 
 	public WordnetDictionary(String path, Deinflector deinflector, SqliteDatabase sqliteDatabaseImpl) {
 		super(path, deinflector, sqliteDatabaseImpl);
@@ -56,6 +63,26 @@ public class WordnetDictionary extends DeinflectableDictionary<WordnetEntry> {
 		}
 		String partOfSpeech = entry.getPartOfSpeech();
 		return partOfSpeech.equals("a") || partOfSpeech.equals("v");
+	}
+
+	@Override
+	public Entries<WordnetEntry> query(String q) {
+		Entries<WordnetEntry> query = super.query(q);
+		if (addExamples)
+			addExamples(query);
+		if (addSynonyms)
+			addSynonyms(query);
+		return query;
+	}
+
+	private void addSynonyms(Entries<WordnetEntry> query) {
+		for (WordnetEntry wordnetEntry : query) {
+			wordnetEntry.setSynonyms(getSynonyms(wordnetEntry, this.lang));
+		}
+	}
+
+	private void addExamples(Entries<WordnetEntry> query) {
+		addSynonyms(query);
 	}
 
 	/*
@@ -109,6 +136,17 @@ public class WordnetDictionary extends DeinflectableDictionary<WordnetEntry> {
 					examplesResult.getValue("jpndef"), examplesResult.getValue("engdef")));
 		}
 		return examples;
+	}
+
+	public List<String> getSynonyms(WordnetEntry entry, Lang lang) {
+		List<String> synonyms = new ArrayList<>();
+		ResultCursor examplesResult = this.sqliteDatabase.select(SYNONYM_QUERY, entry.getSynset(), lang.toString());
+		while (examplesResult.next()) {
+			String value = examplesResult.getValue("lemma");
+			value = value.replace('_', ' ');
+			synonyms.add(value);
+		}
+		return synonyms;
 	}
 
 }

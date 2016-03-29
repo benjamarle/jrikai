@@ -1,5 +1,8 @@
 package org.rikai.dictionary.wordnet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.dictionary.deinflectable.DeinflectedEntry;
 
@@ -16,6 +19,10 @@ public class WordnetEntry extends DeinflectedEntry {
 	private int freq;
 
 	private String partOfSpeech;
+
+	private List<WordnetExample> examples = new ArrayList<>();
+
+	private List<String> synonyms = new ArrayList<>();
 
 	public WordnetEntry() {
 
@@ -45,6 +52,11 @@ public class WordnetEntry extends DeinflectedEntry {
 		result.append(this.word).append(' ');
 
 		result.append(this.gloss);
+
+		if (!synonyms.isEmpty())
+			result.append('\n').append(this.synonyms);
+		if (!examples.isEmpty())
+			result.append('\n').append(this.examples);
 
 		return result.toString();
 	}
@@ -162,6 +174,36 @@ public class WordnetEntry extends DeinflectedEntry {
 	 */
 	public void setSynset(String synset) {
 		this.synset = synset;
+	}
+
+	/**
+	 * @return the examples
+	 */
+	public List<WordnetExample> getExamples() {
+		return examples;
+	}
+
+	/**
+	 * @param examples
+	 *            the examples to set
+	 */
+	public void setExamples(List<WordnetExample> examples) {
+		this.examples = examples;
+	}
+
+	/**
+	 * @return the synonyms
+	 */
+	public List<String> getSynonyms() {
+		return synonyms;
+	}
+
+	/**
+	 * @param synonyms
+	 *            the synonyms to set
+	 */
+	public void setSynonyms(List<String> synonyms) {
+		this.synonyms = synonyms;
 	}
 
 }
