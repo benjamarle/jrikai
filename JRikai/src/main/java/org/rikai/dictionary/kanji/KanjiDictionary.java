@@ -148,10 +148,12 @@ public class KanjiDictionary extends HashMap<Character, KanjiEntry> implements D
 			char c = q.charAt(i);
 			KanjiEntry kanjiEntry = get(c);
 			if (kanjiEntry == null) {
-				if (stopAtFirstNonKanji)
+				if (stopAtFirstNonKanji) {
+					entries.setMaxLen(entries.size());
 					return entries;
-				else
+				} else {
 					continue;
+				}
 			}
 			entries.add(kanjiEntry);
 		}
