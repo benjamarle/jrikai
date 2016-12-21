@@ -26,6 +26,7 @@ public class EpwingDictionary<T> implements Dictionary<EpwingEntry<T>> {
 
 	private boolean loaded = false;
 
+	// TODO Add that in the library as it is useful for all of them
 	private int maxQueryLength = Integer.MAX_VALUE;
 
 	public EpwingDictionary(String path, Hook<T> hook) {
@@ -41,6 +42,7 @@ public class EpwingDictionary<T> implements Dictionary<EpwingEntry<T>> {
 	public void load() {
 		try {
 			book = new Book(path);
+
 			SubBook[] subbooks = book.getSubBooks();
 
 			nbSubBooks = subbooks.length;
@@ -88,6 +90,8 @@ public class EpwingDictionary<T> implements Dictionary<EpwingEntry<T>> {
 
 				entries.add(makeEntry(q, result, subBook));
 			}
+			if(!entries.isEmpty())
+				entries.setMaxLen(q.length());
 		} catch (EBException e) {
 		}
 		return entries;
@@ -161,6 +165,10 @@ public class EpwingDictionary<T> implements Dictionary<EpwingEntry<T>> {
 	 */
 	public void setMaxQueryLength(int maxQueryLength) {
 		this.maxQueryLength = maxQueryLength;
+	}
+
+	public String getName() {
+		return subBook.getName();
 	}
 
 }
