@@ -11,4 +11,4 @@ I refactored the Java implementation quite a bit and added :
 
 ### Contact ###
 Benjamin Marlé 
-biboomig@gmail.com
+benjamarle@gmail.com
