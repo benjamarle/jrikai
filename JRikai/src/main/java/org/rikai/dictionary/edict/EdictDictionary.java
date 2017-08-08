@@ -42,6 +42,8 @@ If you are interested in the FireFox plugin, please visit www.polarcloud.com/rik
 */
 package org.rikai.dictionary.edict;
 
+import android.database.CursorIndexOutOfBoundsException;
+import android.database.sqlite.SQLiteDatabase;
 import org.rikai.deinflector.DeinflectedWord;
 import org.rikai.deinflector.Deinflector;
 import org.rikai.dictionary.db.ResultCursor;
@@ -77,10 +79,10 @@ public abstract class EdictDictionary<T extends EdictEntry> extends Deinflectabl
 		// the Table value
 		// (1, 2, 3, 4, 5, 6, 7)
 		// (_id, word, wmark, kana, kmark, show, defn)
-		return makeEntry(variant, cursor.getValue("kanji"), cursor.getValue("kana"), cursor.getValue("entry"), reason);
+		return makeEntry(variant, cursor.getValue("kanji"), cursor.getValue("kana"), cursor.getValue("entry"), reason, "");
 	}
 
-	protected abstract T makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason);
+	protected abstract T makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason, String pitch);
 
 	public String getSearchQuery() {
 		return SEARCH_QUERY;

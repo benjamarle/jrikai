@@ -76,8 +76,8 @@ public class WordEdictDictionary extends EdictDictionary<EdictEntry> {
 		return false;
 	}
 
-	protected EdictEntry makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason) {
-		return new EdictEntry(variant, kanji, kana, entry, reason);
+	protected EdictEntry makeEntry(DeinflectedWord variant, String kanji, String kana, String entry, String reason, String pitch) {
+		return new EdictEntry(variant, kanji, kana, entry, reason, pitch);
 	}
 
 }

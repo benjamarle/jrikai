@@ -37,6 +37,9 @@ public class EdictEntry extends DeinflectedEntry {
 	/** the definition of the word */
 	private String gloss = "";
 
+	/** the pitch accent of the word, in number format */
+	private String pitch = "";
+
 	public EdictEntry() {
 	}
 
@@ -51,8 +54,10 @@ public class EdictEntry extends DeinflectedEntry {
 	 *            the definition of the word
 	 * @param reason
 	 *            how the original inflected word transformed to the given word
+	 * @param pitch
+	 * 			  the number that conveys the word's pitch accent
 	 */
-	public EdictEntry(DeinflectedWord variant, String word, String reading, String gloss, String reason) {
+	public EdictEntry(DeinflectedWord variant, String word, String reading, String gloss, String reason, String pitch) {
 		if (word == null) {
 			word = reading;
 		}
@@ -60,8 +65,15 @@ public class EdictEntry extends DeinflectedEntry {
 		this.variant = variant;
 		this.word = word;
 		this.reading = reading;
-		this.gloss = gloss;
+		this.gloss = semicolonGloss(gloss);
 		this.reason = reason;
+		this.pitch = pitch;
+	}
+
+	private String semicolonGloss(String gloss)
+	{
+		gloss = gloss.replace("/", "; ");
+		return gloss;
 	}
 
 	private int getToStringMaxLength() {
@@ -129,6 +141,19 @@ public class EdictEntry extends DeinflectedEntry {
 	public void setReading(String reading) {
 		this.reading = reading;
 	}
+
+	/**
+	 * @return the pitch
+	 */
+	public String getPitch() {
+		return this.pitch;
+	}
+
+	/**
+	 * @param pitch
+	 * 			  the pitch to set
+     */
+	public void setPitch(String pitch) { this.pitch = pitch; }
 
 	/**
 	 * @return the gloss
