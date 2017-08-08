@@ -16,8 +16,8 @@ along with JRikai.  If not, see <http://www.gnu.org/licenses/>.
 
 Author: Benjamin Marlé
 */
-package org.rikai.dictionary.db;
 
+package org.rikai.dictionary.db;
 /**
  * @author Benjamin
  *
@@ -68,7 +68,7 @@ public class DatabaseException extends RuntimeException {
 	 * @param arg3
 	 */
 	public DatabaseException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
+		super(arg0, arg1);//, arg2, arg3);
 		// TODO Auto-generated constructor stub
 	}
 

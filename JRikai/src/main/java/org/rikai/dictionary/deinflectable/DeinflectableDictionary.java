@@ -11,6 +11,7 @@ import org.rikai.dictionary.db.JdbcSqliteDatabase;
 import org.rikai.dictionary.db.ResultCursor;
 import org.rikai.dictionary.db.SqliteDatabase;
 import org.rikai.utils.JapaneseConverter;
+import org.zorgblub.rikai.DroidSqliteDatabase;
 
 public abstract class DeinflectableDictionary<T extends DeinflectedEntry> implements Dictionary<T> {
 
@@ -23,6 +24,8 @@ public abstract class DeinflectableDictionary<T extends DeinflectedEntry> implem
 	private String path;
 
 	protected SqliteDatabase sqliteDatabase;
+
+
 
 	public DeinflectableDictionary(String path) {
 		this(path, new JdbcSqliteDatabase());
@@ -45,6 +48,7 @@ public abstract class DeinflectableDictionary<T extends DeinflectedEntry> implem
 
 	public void load() {
 		this.sqliteDatabase.loadEdict(this.path);
+
 	}
 
 	public boolean isLoaded() {
