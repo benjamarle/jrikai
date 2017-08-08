@@ -1,9 +1,5 @@
 package org.rikai.dictionary.deinflectable;
 
-import android.widget.Toast;
-
-import net.zorgblub.typhon.activity.TyphonActivity;
-
 import java.util.Collections;
 import java.util.List;
 
